@@ -23,3 +23,15 @@
 * Pull the text Commentary from Kafka and convert it into speech.
 * Play the commentary of the Selected Match. 
 
+## Run the project on your local machine
+
+### ✨ Install Docker & Docker Compose
+### ✨ Clone the Code into your machine.
+### ✨ Start the Docker Daemon
+### ✨ change the directory to "CricRadio" & Run the following command
+```
+docker-compose up
+```
+
+### ✨ Go to localhost:3000 to listen to the commentary.
+
