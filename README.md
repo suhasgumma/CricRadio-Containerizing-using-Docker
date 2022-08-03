@@ -33,5 +33,5 @@
 docker-compose up
 ```
 
-### ✨ Go to localhost:3000 to listen to the commentary.
+### ✨ Go to localhost:3000 to listen to the commentary. It's that simple.
 
