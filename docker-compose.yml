@@ -92,11 +92,11 @@ services:
       - -c 
       - |
         echo 'Giving Kafka a bit of time to start up…'
-        sleep 30
+        sleep 40
         ./main
     
   cricradio-web-svc:
-    image: suhasgumma/cricradio-web-svc:latest
+    image: cricradio-web-svc:latest
     container_name: cricradio-web-svc
     ports:
       - 3000:3000
