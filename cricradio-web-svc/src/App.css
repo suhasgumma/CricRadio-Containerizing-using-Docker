@@ -1,0 +1,100 @@
+body {
+  background-color: #0a1014;
+  padding: 15px 80px 30px;
+}
+
+.ds-font-bold {
+  font-family: sans-serif;
+  color: white;
+}
+
+.header{
+  padding: 16px 16px;
+  background-color: #202c33;
+  justify-content: center;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+}
+
+.header-left{
+  padding: 5px 16px;
+  background-color: #202c33;
+  justify-content: center;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+}
+
+.navmod{
+  border-radius: 4px;
+  padding: 1px;
+}
+
+.containermod{
+  margin-left: 20px;
+}
+
+.match-list{
+  padding-left: 4px;
+  padding-right: 4px;
+  overflow-y: scroll;
+  float: left;
+  position:relative;
+  background-color: #111b21;
+}
+
+.match-content{
+  margin-top: 20px;
+  border-radius: 4px;
+  height: 85vh;
+  width: 100%;
+  background-color: #343a40;
+  display: flex;
+  box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .06), 0 2px 5px 0 rgba(0, 0, 0, .2);
+  overflow: hidden;
+}
+
+.comm-content{
+  width: 100%;
+}
+
+.teams{
+  font-family: 'Poppins';
+  font-weight: 600;
+  font-size: 14px;
+  color: aliceblue;
+  padding: 4px 0px;
+}
+
+.scores{
+  font-family: 'Poppins';
+  font-weight: 400;
+  font-size: 12px;
+  color: aliceblue;
+
+}
+
+.sidebar {
+  width: 400px;
+  flex: 40%;
+  border-right: 1px solid #555454;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.sidebar-contact {
+  height: 72px;
+  padding: 6px 10px;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #202c33;
+  cursor: pointer;
+  background-color: #111b21;
+}
+
+/*d1d7db e9edef*/
+
+.Speech {
+  width: 50px;
+}
+

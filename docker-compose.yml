@@ -1,0 +1,109 @@
+version: "3.9"
+services:
+  zookeeper:
+    image: confluentinc/cp-zookeeper:4.1.1
+    hostname: zookeeper
+    ports:
+      - "32181:32181"
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 32181
+      ZOOKEEPER_TICK_TIME: 2000
+      ZOOKEEPER_SYNC_LIMIT: 2
+    volumes:
+      - zookeeper-data-volume:/var/lib/zookeeper/data
+      - zookeeper-log-volume:/var/lib/zookeeper/log
+
+  kafka:
+    image: confluentinc/cp-kafka:4.1.1
+    hostname: kafka
+    container_name: kafka
+    depends_on:
+      - zookeeper
+    ports:
+      - "29092:29092"
+      - "39092:39092"
+      - "9092:9092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:32181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,EXTERNAL://localhost:39092,LISTENER_GO://kafka:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,EXTERNAL:PLAINTEXT,LISTENER_GO:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    
+    volumes:
+      - kafkavolume:/var/lib/kafka/data
+
+  schema-registry:
+    image: confluentinc/cp-schema-registry:4.1.1
+    hostname: schema-registry
+    ports:
+      - "38081:38081"
+    depends_on:
+      - kafka
+    environment:
+      SCHEMA_REGISTRY_KAFKASTORE_CONNECTION_URL: zookeeper:32181
+      SCHEMA_REGISTRY_HOST_NAME: schema-registry
+      SCHEMA_REGISTRY_LISTENERS: http://schema-registry:38081
+      SCHEMA_REGISTRY_DEBUG: "true"
+      SCHEMA_REGISTRY_ACCESS_CONTROL_ALLOW_METHODS: GET,POST,PUT,OPTIONS
+  
+  kafka-rest:
+    image: confluentinc/cp-kafka-rest:4.1.1
+    hostname: kafka-rest
+    container_name: kafka-rest
+    ports:
+      - "38082:38082"
+    depends_on:
+      - schema-registry
+    environment:
+      KAFKA_REST_ZOOKEEPER_CONNECT: zookeeper:32181
+      KAFKA_REST_SCHEMA_REGISTRY_URL: schema-registry:38081
+      KAFKA_REST_HOST_NAME: kafka-rest
+      KAFKA_REST_LISTENERS: http://kafka-rest:38082
+      KAFKA_REST_ACCESS_CONTROL_ALLOW_ORIGIN: "*"
+      KAFKA_REST_ACCESS_CONTROL_ALLOW_METHODS: "GET,POST,PUT,DELETE"
+      KAFKA_REST_ACCESS_CONTROL_ALLOW_HEADERS: "origin,content-type,accept,authorization"
+      KAFKA_DELETE_TOPIC_ENABLE: "true"
+    
+  mysql-db:
+    image: mysql:latest
+    container_name: mysql-db
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+    volumes:
+    - sqlvolume:/var/lib/mysql
+
+  cricradio-go-svc:
+    image: suhasgumma/cricradio-go-svc:latest
+    container_name: cricradio-go-svc
+    ports:
+      - 9900:9900
+    
+    depends_on:
+      - kafka
+      - mysql-db
+
+    entrypoint: 
+      - sh 
+      - -c 
+      - |
+        echo 'Giving Kafka a bit of time to start up…'
+        sleep 30
+        ./main
+    
+  cricradio-web-svc:
+    image: suhasgumma/cricradio-web-svc:latest
+    container_name: cricradio-web-svc
+    ports:
+      - 3000:3000
+    depends_on:
+      - cricradio-go-svc
+
+volumes:
+  sqlvolume:
+  kafkavolume:
+  zookeeper-data-volume:
+  zookeeper-log-volume:
