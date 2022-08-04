@@ -5,6 +5,7 @@ import (
 	"cricradio-go-svc/db/kafka"
 	"cricradio-go-svc/logger"
 	"time"
+	cors "github.com/rs/cors/wrapper/gin"
 )
 import "github.com/gin-gonic/gin"
 
@@ -13,7 +14,9 @@ var (
 )
 
 func StartApplication() {
+	router.Use(cors.Default())
 	mapUrls()
+	
 
 	logger.Info("Starting Cron Jobs")
 	defer kafka.ControllerConn.Close()
