@@ -15,8 +15,6 @@ services:
 
   kafka:
     image: confluentinc/cp-kafka:4.1.1
-    hostname: kafka
-    container_name: kafka
     depends_on:
       - zookeeper
     ports:
@@ -52,8 +50,6 @@ services:
   
   kafka-rest:
     image: confluentinc/cp-kafka-rest:4.1.1
-    hostname: kafka-rest
-    container_name: kafka-rest
     ports:
       - "38082:38082"
     depends_on:
@@ -69,7 +65,6 @@ services:
     
   mysql-db:
     image: mysql:latest
-    container_name: mysql-db
     ports:
       - 3306:3306
     environment:
@@ -96,7 +91,7 @@ services:
         ./main
     
   cricradio-web-svc:
-    image: cricradio-web-svc:latest
+    image: suhasgumma/cricradio-web-svc:latest
     container_name: cricradio-web-svc
     ports:
       - 3000:3000
