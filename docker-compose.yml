@@ -66,17 +66,17 @@ services:
   mysql-db:
     image: mysql:latest
     ports:
-      - 3306:3306
+      - "3307:3306"
     environment:
       MYSQL_ROOT_PASSWORD: password
     volumes:
     - sqlvolume:/var/lib/mysql
 
   cricradio-go-svc:
-    image: suhasgumma/cricradio-go-svc:latest
+    image: cricradio-go-svc:latest
     container_name: cricradio-go-svc
     ports:
-      - 9900:9900
+      - "9900:9900"
     
     depends_on:
       - kafka
@@ -91,10 +91,10 @@ services:
         ./main
     
   cricradio-web-svc:
-    image: suhasgumma/cricradio-web-svc:latest
+    image: cricradio-web-svc:latest
     container_name: cricradio-web-svc
     ports:
-      - 3000:3000
+      - "3000:3000"
     depends_on:
       - cricradio-go-svc
 

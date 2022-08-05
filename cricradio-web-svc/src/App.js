@@ -98,9 +98,8 @@ class App extends Component{
                 (error) => {
                     this.setState({
                         isLoaded: true,
-                        error,   
-                    }
-                    );
+                        error
+                    });
                 }
             )
     }
@@ -135,13 +134,10 @@ class App extends Component{
             headers: {'Accept': 'application/vnd.kafka.json.v2+json'}
         }).then(res => res.json()).then(
             (result)=>{
-                console.log(result)
+                // console.log(result)
                 var n = result.length
                 if(n>0){
                     this.setState({comm:result[n-1].value})
-                    // this.value = result[n-1].value.commentary
-                    // this.listenCommentary(result[n-1].value.commentary)
-
                 }
 
             },
@@ -154,12 +150,6 @@ class App extends Component{
 
         this.state.listening=true
         console.log("consuming match : "+matchId)
-        // this.setState({comm:{"teamA":"West Indies","teamB":"India","scoreA":"(48.3/50 ov) 296/5","scoreB":"","commentary":"Thakur to Hope, 1 run. Yorker at fifth, nailed it. Dug out to cover.","ball":"48.3"}})
-
-        // while(this.state.listening){
-        //     console.log("setting state")
-        //     await sleep(5000)
-        // }
         while(this.state.listening){
             await this.consume()
 
