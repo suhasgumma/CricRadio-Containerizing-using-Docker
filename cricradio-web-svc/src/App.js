@@ -63,7 +63,7 @@ class App extends Component{
     }
 
     createConsumer() {
-        fetch(`http://localhost:38082/consumers/${this.state.group}`,{
+        fetch(`http://localhost:8082/consumers/${this.state.group}`,{
             method:"POST",
             headers: { 'Content-Type': 'application/vnd.kafka.json.v2+json' },
             body:JSON.stringify({
@@ -86,7 +86,7 @@ class App extends Component{
     }
 
     componentDidMount() {
-        fetch("http://localhost:9900/matches/list")
+        fetch("http://localhost:8081/matches/list")
             .then(res => res.json())
             .then(
                 (result) => {
@@ -106,7 +106,7 @@ class App extends Component{
 
     async ListenComm(matchId){
         this.state.listening = false
-        await fetch(`http://localhost:38082/consumers/${this.state.group}/instances/${this.state.instance}/subscription`,{
+        await fetch(`http://localhost:8082/consumers/${this.state.group}/instances/${this.state.instance}/subscription`,{
             method: "POST",
             headers: { 'Content-Type': 'application/vnd.kafka.json.v2+json' },
             body:JSON.stringify({
@@ -129,7 +129,7 @@ class App extends Component{
 
     consume(){
 
-        fetch(`http://localhost:38082/consumers/${this.state.group}/instances/${this.state.instance}/records`,{
+        fetch(`http://localhost:8082/consumers/${this.state.group}/instances/${this.state.instance}/records`,{
             method:"GET",
             headers: {'Accept': 'application/vnd.kafka.json.v2+json'}
         }).then(res => res.json()).then(
