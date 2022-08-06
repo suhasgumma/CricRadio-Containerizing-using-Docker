@@ -50,6 +50,7 @@ services:
   
   kafka-rest:
     image: confluentinc/cp-kafka-rest:4.1.1
+    container_name: kafka-rest
     ports:
       - "38082:38082"
     depends_on:
@@ -61,7 +62,7 @@ services:
       KAFKA_REST_LISTENERS: http://kafka-rest:38082
       KAFKA_REST_ACCESS_CONTROL_ALLOW_ORIGIN: "*"
       KAFKA_REST_ACCESS_CONTROL_ALLOW_METHODS: "GET,POST,PUT,DELETE"
-      KAFKA_REST_ACCESS_CONTROL_ALLOW_HEADERS: "origin,content-type,accept,authorization"
+      KAFKA_REST_ACCESS_CONTROL_ALLOW_HEADERS: "*"
     
   mysql-db:
     image: mysql:latest
@@ -73,7 +74,7 @@ services:
     - sqlvolume:/var/lib/mysql
 
   cricradio-go-svc:
-    image: cricradio-go-svc:latest
+    image: suhasgumma/cricradio-go-svc:latest
     container_name: cricradio-go-svc
     ports:
       - "9900:9900"
@@ -89,9 +90,20 @@ services:
         echo 'Giving Kafka a bit of time to start up…'
         sleep 40
         ./main
+  
+  cricradio-nginx-svc:
+    image: suhasgumma/cricradio-nginx-svc:latest
+    container_name: cricradio-nginx-svc
+    ports:
+      - "8080:8080"
+      - "8081:8081"
+      - "8082:8082"
+    depends_on:
+      - cricradio-go-svc
+
     
   cricradio-web-svc:
-    image: cricradio-web-svc:latest
+    image: suhasgumma/cricradio-web-svc:latest
     container_name: cricradio-web-svc
     ports:
       - "3000:3000"
